@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controlador de Cuadrado</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        button {
+            font-size: 24px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Controla el Cuadrado</h1>
+    <div>
+        <button id="arriba" onmouseenter="iniciarMovimiento('ARRIBA')" onmouseleave="detenerMovimiento()">⬆️</button>
+    </div>
+    <div>
+        <button id="izquierda" onmouseenter="iniciarMovimiento('IZQUIERDA')" onmouseleave="detenerMovimiento()">⬅️</button>
+        <button id="abajo" onmouseenter="iniciarMovimiento('ABAJO')" onmouseleave="detenerMovimiento()">⬇️</button>
+        <button id="derecha" onmouseenter="iniciarMovimiento('DERECHA')" onmouseleave="detenerMovimiento()">➡️</button>
+    </div>
+    
+    
+    <script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+
+    let movimientoIntervalo;
+
+    function iniciarMovimiento(direccion) {
+        enviarMovimiento(direccion);
+        movimientoIntervalo = setInterval(() => enviarMovimiento(direccion), 100);  // Enviar movimiento continuo
+    }
+
+    function detenerMovimiento() {
+        clearInterval(movimientoIntervalo);  // Detener el movimiento
+    }
+
+    function enviarMovimiento(direccion) {
+        socket.emit('moverCuadrado', direccion);
+    }
+</script>
+
+    
+</body>
+</html>
