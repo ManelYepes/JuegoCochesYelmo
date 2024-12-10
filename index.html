@@ -10,15 +10,25 @@
             display: block;
             margin: 0 auto;
         }
+        #qrCode {
+            margin: 20px auto;
+            display: block;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
+    <h1 style="text-align: center;">Juego de Cuadrados</h1>
     <canvas id="gameCanvas" width="1280" height="640"></canvas>
-    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- Contenedor del QR -->
+    <div id="qrCode"></div>
+
+    <!-- Script de QRCode -->
+    <script src="qrcode.min.js"></script>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        const socket = io();
 
         let cuadrado = {
             x: 100,
@@ -34,30 +44,13 @@
         let enemigos = [];
         const velocidadEnemigo = 3;
 
-        // Escuchar eventos para mover el cuadrado desde el servidor
-        socket.on('moverCuadrado', (direccion) => {
-            switch (direccion) {
-                case 'ARRIBA':
-                    if (cuadrado.y - cuadrado.speed >= limiteSuperior) {
-                        cuadrado.y -= cuadrado.speed;
-                    }
-                    break;
-                case 'ABAJO':
-                    if (cuadrado.y + cuadrado.speed <= limiteInferior - cuadrado.height) {
-                        cuadrado.y += cuadrado.speed;
-                    }
-                    break;
-                case 'IZQUIERDA':
-                    if (cuadrado.x - cuadrado.speed >= 0) {
-                        cuadrado.x -= cuadrado.speed;
-                    }
-                    break;
-                case 'DERECHA':
-                    if (cuadrado.x + cuadrado.speed <= canvas.width - cuadrado.width) {
-                        cuadrado.x += cuadrado.speed;
-                    }
-                    break;
-            }
+        // Generar QR dinámicamente
+        const controllerUrl = `${window.location.origin}/controller.html`; // Genera la URL para el controlador
+        const qrCodeContainer = document.getElementById('qrCode');
+        new QRCode(qrCodeContainer, {
+            text: controllerUrl,
+            width: 200,
+            height: 200
         });
 
         // Función para crear enemigos
