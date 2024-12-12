@@ -29,7 +29,8 @@
     
     <script src="https://1dce-2a0c-5a84-b405-8500-187-d0cb-db82-5d76.ngrok-free.app/socket.io/socket.io.js"></script>
 <script>
-    const socket = io();
+    const socket = new WebSocket("https://juegocoches.pages.dev/");
+
 
     let movimientoIntervalo;
 
@@ -43,8 +44,9 @@
     }
 
     function enviarMovimiento(direccion) {
-        socket.emit('moverCuadrado', direccion);
-    }
+    socket.send(direccion); // Enviar la dirección al servidor
+}
+
 </script>
 
     
