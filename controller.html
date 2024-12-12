@@ -27,8 +27,8 @@
     </div>
 
     <script>
-        // Conectar al servidor WebSocket
-        const socket = new WebSocket("wss://TUDOMINIODEWORKER.workers.dev"); // Cambia por tu URL pública
+        // WebSocket para enviar comandos
+        const socket = new WebSocket("wss://TUDOMINIOWEBSOCKET"); // Cambia por tu WebSocket público
 
         let movimientoIntervalo;
 
@@ -42,7 +42,7 @@
         }
 
         function enviarMovimiento(direccion) {
-            socket.send(direccion); // Enviar la dirección al servidor
+            socket.send(direccion); // Enviar comando al WebSocket
         }
     </script>
 </body>
