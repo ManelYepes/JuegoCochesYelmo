@@ -25,30 +25,25 @@
         <button id="abajo" onmouseenter="iniciarMovimiento('ABAJO')" onmouseleave="detenerMovimiento()">⬇️</button>
         <button id="derecha" onmouseenter="iniciarMovimiento('DERECHA')" onmouseleave="detenerMovimiento()">➡️</button>
     </div>
-    
-    
-    <script src="https://1dce-2a0c-5a84-b405-8500-187-d0cb-db82-5d76.ngrok-free.app/socket.io/socket.io.js"></script>
-<script>
-    const socket = new WebSocket("https://juegocoches.pages.dev/");
 
+    <script>
+        // Conectar al servidor WebSocket
+        const socket = new WebSocket("wss://TUDOMINIODEWORKER.workers.dev"); // Cambia por tu URL pública
 
-    let movimientoIntervalo;
+        let movimientoIntervalo;
 
-    function iniciarMovimiento(direccion) {
-        enviarMovimiento(direccion);
-        movimientoIntervalo = setInterval(() => enviarMovimiento(direccion), 100);  // Enviar movimiento continuo
-    }
+        function iniciarMovimiento(direccion) {
+            enviarMovimiento(direccion);
+            movimientoIntervalo = setInterval(() => enviarMovimiento(direccion), 100);  // Enviar movimiento continuo
+        }
 
-    function detenerMovimiento() {
-        clearInterval(movimientoIntervalo);  // Detener el movimiento
-    }
+        function detenerMovimiento() {
+            clearInterval(movimientoIntervalo);  // Detener el movimiento
+        }
 
-    function enviarMovimiento(direccion) {
-    socket.send(direccion); // Enviar la dirección al servidor
-}
-
-</script>
-
-    
+        function enviarMovimiento(direccion) {
+            socket.send(direccion); // Enviar la dirección al servidor
+        }
+    </script>
 </body>
 </html>
