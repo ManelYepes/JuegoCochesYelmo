@@ -45,42 +45,41 @@
         const velocidadEnemigo = 3;
 
         // Generar QR dinámicamente
-        const controllerUrl = "https://TUDOMINIODEWORKER.workers.dev/controller.html";
-
-// Conexión WebSocket
-const socket = new WebSocket("https://juegocoches.pages.dev/");
-socket.onmessage = (event) => {
-    const direccion = event.data;
-    switch (direccion) {
-        case 'ARRIBA':
-            if (cuadrado.y - cuadrado.speed >= limiteSuperior) {
-                cuadrado.y -= cuadrado.speed;
-            }
-            break;
-        case 'ABAJO':
-            if (cuadrado.y + cuadrado.speed <= limiteInferior - cuadrado.height) {
-                cuadrado.y += cuadrado.speed;
-            }
-            break;
-        case 'IZQUIERDA':
-            if (cuadrado.x - cuadrado.speed >= 0) {
-                cuadrado.x -= cuadrado.speed;
-            }
-            break;
-        case 'DERECHA':
-            if (cuadrado.x + cuadrado.speed <= canvas.width - cuadrado.width) {
-                cuadrado.x += cuadrado.speed;
-            }
-            break;
-    }
-};
-
+        const controllerUrl = "https://TUDOMINIODEWORKER.workers.dev/controller.html"; // Cambia por tu URL pública
         const qrCodeContainer = document.getElementById('qrCode');
         new QRCode(qrCodeContainer, {
             text: controllerUrl,
             width: 200,
             height: 200
         });
+
+        // Conectar al servidor WebSocket
+        const socket = new WebSocket("wss://TUDOMINIODEWORKER.workers.dev"); // Cambia por tu URL pública
+        socket.onmessage = (event) => {
+            const direccion = event.data;
+            switch (direccion) {
+                case 'ARRIBA':
+                    if (cuadrado.y - cuadrado.speed >= limiteSuperior) {
+                        cuadrado.y -= cuadrado.speed;
+                    }
+                    break;
+                case 'ABAJO':
+                    if (cuadrado.y + cuadrado.speed <= limiteInferior - cuadrado.height) {
+                        cuadrado.y += cuadrado.speed;
+                    }
+                    break;
+                case 'IZQUIERDA':
+                    if (cuadrado.x - cuadrado.speed >= 0) {
+                        cuadrado.x -= cuadrado.speed;
+                    }
+                    break;
+                case 'DERECHA':
+                    if (cuadrado.x + cuadrado.speed <= canvas.width - cuadrado.width) {
+                        cuadrado.x += cuadrado.speed;
+                    }
+                    break;
+            }
+        };
 
         // Función para crear enemigos
         function generarEnemigo() {
