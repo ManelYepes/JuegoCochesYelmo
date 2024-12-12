@@ -45,7 +45,7 @@
         const velocidadEnemigo = 3;
 
         // Generar QR dinámicamente
-        const controllerUrl = "https://TUDOMINIODEWORKER.workers.dev/controller.html"; // Cambia por tu URL pública
+        const controllerUrl = `${window.location.origin}/controller.html`; // URL del controlador
         const qrCodeContainer = document.getElementById('qrCode');
         new QRCode(qrCodeContainer, {
             text: controllerUrl,
@@ -53,8 +53,8 @@
             height: 200
         });
 
-        // Conectar al servidor WebSocket
-        const socket = new WebSocket("wss://TUDOMINIODEWORKER.workers.dev"); // Cambia por tu URL pública
+        // WebSocket para recibir comandos
+        const socket = new WebSocket("wss://TUDOMINIOWEBSOCKET"); // Cambia por tu WebSocket público
         socket.onmessage = (event) => {
             const direccion = event.data;
             switch (direccion) {
