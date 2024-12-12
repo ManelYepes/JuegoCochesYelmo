@@ -45,7 +45,36 @@
         const velocidadEnemigo = 3;
 
         // Generar QR dinámicamente
-        const controllerUrl = `${window.location.origin}/controller.html`; // Genera la URL para el controlador
+        const controllerUrl = "https://TUDOMINIODEWORKER.workers.dev/controller.html";
+
+// Conexión WebSocket
+const socket = new WebSocket("https://juegocoches.pages.dev/");
+socket.onmessage = (event) => {
+    const direccion = event.data;
+    switch (direccion) {
+        case 'ARRIBA':
+            if (cuadrado.y - cuadrado.speed >= limiteSuperior) {
+                cuadrado.y -= cuadrado.speed;
+            }
+            break;
+        case 'ABAJO':
+            if (cuadrado.y + cuadrado.speed <= limiteInferior - cuadrado.height) {
+                cuadrado.y += cuadrado.speed;
+            }
+            break;
+        case 'IZQUIERDA':
+            if (cuadrado.x - cuadrado.speed >= 0) {
+                cuadrado.x -= cuadrado.speed;
+            }
+            break;
+        case 'DERECHA':
+            if (cuadrado.x + cuadrado.speed <= canvas.width - cuadrado.width) {
+                cuadrado.x += cuadrado.speed;
+            }
+            break;
+    }
+};
+
         const qrCodeContainer = document.getElementById('qrCode');
         new QRCode(qrCodeContainer, {
             text: controllerUrl,
