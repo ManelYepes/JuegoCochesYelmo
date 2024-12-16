@@ -1,4 +1,4 @@
-name = "websocket-game-worker"  # Nombre del proyecto Worker
+name = "juegocochesprueba"  # Nombre del proyecto Worker
 type = "javascript"             # Tipo de proyecto
 account_id = "TU_ACCOUNT_ID"    # ID de tu cuenta Cloudflare
 compatibility_date = "2024-06-12" # Fecha de compatibilidad
