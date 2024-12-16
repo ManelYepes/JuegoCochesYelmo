@@ -1,3 +1,10 @@
-name = "JuegoCochesYelmo" # Nombre del proyecto
-compatibility_date = "2024-12-12" # Fecha actual
-main = "server.js" # Archivo principal del Worker
+name = "websocket-game-worker"  # Nombre del proyecto Worker
+type = "javascript"             # Tipo de proyecto
+account_id = "TU_ACCOUNT_ID"    # ID de tu cuenta Cloudflare
+compatibility_date = "2024-06-12" # Fecha de compatibilidad
+
+[build]
+command = "echo 'No build step'" # No es necesario compilar en este ejemplo
+
+[site]
+bucket = "./"                   # Directorio base (puedes cambiarlo)
