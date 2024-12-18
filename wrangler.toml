@@ -1,7 +1,7 @@
 name = "juegocochesprueba"  # Nombre del proyecto Worker
 type = "javascript"             # Tipo de proyecto
-account_id = "TU_ACCOUNT_ID"    # ID de tu cuenta Cloudflare
-compatibility_date = "2024-06-12" # Fecha de compatibilidad
+account_id = "3c2887fe2a8cb23265d732d7573cad29"    # ID de tu cuenta Cloudflare
+compatibility_date = "2024-12-18" # Fecha de compatibilidad
 
 [build]
 command = "echo 'No build step'" # No es necesario compilar en este ejemplo
