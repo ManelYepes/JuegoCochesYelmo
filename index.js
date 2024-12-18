@@ -1,20 +1,24 @@
 export default {
-  async fetch(request, env) {
-    if (request.headers.get("Upgrade") !== "websocket") {
-      return new Response("Expected WebSocket", { status: 426 });
+    fetch(req, env) {
+        // Maneja las conexiones WebSocket
+        if (req.headers.get("Upgrade") === "websocket") {
+            const { 0: client, 1: server } = new WebSocketPair();
+            server.accept();
+
+            // Evento de mensaje
+            server.addEventListener("message", (event) => {
+                console.log("Mensaje recibido: ", event.data);
+                // Envía el mensaje recibido a todos los clientes conectados
+                server.send(event.data);
+            });
+
+            return new Response(null, {
+                status: 101,
+                webSocket: client
+            });
+        }
+
+        // Responde con un 404 si no es WebSocket
+        return new Response("No WebSocket connection", { status: 404 });
     }
-
-    const [client, server] = Object.values(new WebSocketPair());
-    server.accept();
-
-    server.addEventListener("message", (event) => {
-      console.log("Mensaje recibido:", event.data);
-      server.send(event.data); // Reenviar mensaje al frontend
-    });
-
-    return new Response(null, {
-      status: 101,
-      webSocket: client,
-    });
-  },
 };
