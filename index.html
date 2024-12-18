@@ -2,145 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego de Coches</title>
-    <style>
-        canvas {
-            border: 1px solid black;
-            display: block;
-            margin: 0 auto;
-        }
-        #qrCode {
-            margin: 20px auto;
-            display: block;
-            text-align: center;
-        }
-    </style>
+    <title>Juego de Cuadrados</title>
+    <script src="qrcode.min.js"></script>
 </head>
 <body>
-    <h1 style="text-align: center;">Juego de Coches</h1>
+    <h1>Juego de Cuadrados</h1>
     <canvas id="gameCanvas" width="1280" height="640"></canvas>
-
-    <!-- Contenedor del QR -->
     <div id="qrCode"></div>
 
-    <!-- Script de QRCode -->
-    <script src="qrcode.min.js"></script>
     <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-
-        let cuadrado = {
-            x: 100,
-            y: 100,
-            width: 50,
-            height: 50,
-            speed: 10
-        };
-
-        const limiteSuperior = 50;
-        const limiteInferior = 500;
-
-        let enemigos = [];
-        const velocidadEnemigo = 3;
-
-        // Generar QR dinámicamente
-        const controllerUrl = `${window.location.origin}/controller.html`; // URL del controlador
         const qrCodeContainer = document.getElementById('qrCode');
-        new QRCode(qrCodeContainer, {
-            text: controllerUrl,
-            width: 200,
-            height: 200
-        });
+        const wsUrl = `${window.location.origin}/ws`; // URL para WebSocket
+        new QRCode(qrCodeContainer, { text: wsUrl, width: 200, height: 200 });
 
-        // WebSocket para recibir comandos
-        const socket = new WebSocket("wss://TUDOMINIOWEBSOCKET"); // Cambia por tu WebSocket público
-        socket.onmessage = (event) => {
-            const direccion = event.data;
-            switch (direccion) {
-                case 'ARRIBA':
-                    if (cuadrado.y - cuadrado.speed >= limiteSuperior) {
-                        cuadrado.y -= cuadrado.speed;
-                    }
-                    break;
-                case 'ABAJO':
-                    if (cuadrado.y + cuadrado.speed <= limiteInferior - cuadrado.height) {
-                        cuadrado.y += cuadrado.speed;
-                    }
-                    break;
-                case 'IZQUIERDA':
-                    if (cuadrado.x - cuadrado.speed >= 0) {
-                        cuadrado.x -= cuadrado.speed;
-                    }
-                    break;
-                case 'DERECHA':
-                    if (cuadrado.x + cuadrado.speed <= canvas.width - cuadrado.width) {
-                        cuadrado.x += cuadrado.speed;
-                    }
-                    break;
-            }
-        };
-
-        // Función para crear enemigos
-        function generarEnemigo() {
-            const yAleatorio = Math.floor(Math.random() * (limiteInferior - limiteSuperior)) + limiteSuperior;
-            enemigos.push({
-                x: canvas.width,
-                y: yAleatorio,
-                width: 50,
-                height: 50
-            });
-        }
-
-        // Función para actualizar los enemigos
-        function moverEnemigos() {
-            for (let i = 0; i < enemigos.length; i++) {
-                enemigos[i].x -= velocidadEnemigo;
-
-                // Si el enemigo se mueve fuera del canvas, se elimina
-                if (enemigos[i].x + enemigos[i].width < 0) {
-                    enemigos.splice(i, 1);
-                    i--;
-                }
-            }
-        }
-
-        // Función para dibujar todos los elementos en el canvas
-        function dibujar() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Dibujar límites
-            ctx.strokeStyle = 'blue';
-            ctx.beginPath();
-            ctx.moveTo(0, limiteSuperior);
-            ctx.lineTo(canvas.width, limiteSuperior);
-            ctx.moveTo(0, limiteInferior);
-            ctx.lineTo(canvas.width, limiteInferior);
-            ctx.stroke();
-
-            // Dibujar cuadrado
-            ctx.fillStyle = 'red';
-            ctx.fillRect(cuadrado.x, cuadrado.y, cuadrado.width, cuadrado.height);
-
-            // Dibujar enemigos
-            ctx.fillStyle = 'green';
-            enemigos.forEach(enemigo => {
-                ctx.fillRect(enemigo.x, enemigo.y, enemigo.width, enemigo.height);
-            });
-        }
-
-        // Bucle principal del juego
-        function actualizar() {
-            moverEnemigos();
-            dibujar();
-            requestAnimationFrame(actualizar);
-        }
-
-        // Iniciar el bucle de actualización
-        actualizar();
-
-        // Generar un nuevo enemigo cada 2 segundos
-        setInterval(generarEnemigo, 2000);
+        const ws = new WebSocket(wsUrl);
+        ws.onmessage = (event) => console.log("Mensaje recibido:", event.data);
     </script>
 </body>
 </html>
